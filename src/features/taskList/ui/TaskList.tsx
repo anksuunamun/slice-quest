@@ -28,26 +28,31 @@ const filterButtons: TFilterButton[] = [
 
 export const TaskList = () => {
     const { setFilter, filter, tasks, removeTask } = useTasks(initialTasks);
-
     return (
         <div>
             <div className={styles.wrapper}>
                 <span>Filter: </span>
-                {filterButtons.map(({ id }) => (
-                    <FilterButton
-                        key={id}
-                        onClick={() => setFilter(id)}
-                        title={id}
-                        active={filter === id}
-                    />
-                ))}
+                {filterButtons.map(({ id }) => {
+                    const handleClick = () => setFilter(id);
+                    return (
+                        <FilterButton
+                            key={id}
+                            onClick={handleClick}
+                            title={id}
+                            active={filter === id}
+                        />
+                    );
+                })}
             </div>
             <div className={styles.tasks}>
                 {tasks.map(({ id, title, completed }) => (
-                    <div key={id} className={styles.task}>
-                        <TaskCard id={id} title={title} completed={completed} />
-                        {!completed && <button onClick={() => removeTask(id)}>ready</button>}
-                    </div>
+                    <TaskCard
+                        key={id}
+                        id={id}
+                        title={title}
+                        completed={completed}
+                        handleTaskRemove={removeTask}
+                    />
                 ))}
             </div>
         </div>
